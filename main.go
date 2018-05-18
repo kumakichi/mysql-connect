@@ -3,14 +3,17 @@ package main
 import (
 	"fmt"
 	"os"
-	"runtime"
+)
+
+var (
+	myCnf  string
+	groups map[string]map[string]string
 )
 
 func main() {
-	if runtime.GOOS != "linux" {
-		fmt.Println("Currently, support only linux platform")
-		os.Exit(0)
-	}
+	groups = make(map[string]map[string]string)
+	initConfigurations()
+	readGroups()
 
 	if len(os.Args) < 2 {
 		usage()
@@ -23,6 +26,8 @@ func main() {
 		get(args)
 	case "list":
 		list()
+	case "show":
+		show(args)
 	case "del":
 		del(args)
 	case "set":
@@ -36,6 +41,6 @@ func main() {
 }
 
 func usage() {
-	fmt.Printf("Usage: %s [get/set/list/del/connect] [group]\n", os.Args[0])
+	fmt.Printf("Usage: %s [get/set/list/show/del/connect] [group]\n", os.Args[0])
 	os.Exit(0)
 }

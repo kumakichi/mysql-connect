@@ -12,7 +12,24 @@ func get(args []string) {
 }
 
 func list() {
+	for key, _ := range groups {
+		fmt.Println(key)
+	}
+}
 
+func show(args []string) {
+	if len(args) != 1 {
+		errArgs("Should be like: %s show groupName1 [groupName2]...\n", os.Args[0])
+	}
+
+	for _, val := range args {
+		fmt.Printf(" ------- %s -------\n", val)
+		if g, ok := groups[val]; ok {
+			printGroup(&g)
+		} else {
+			fmt.Println("not found")
+		}
+	}
 }
 
 func del(args []string) {
