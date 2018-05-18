@@ -134,7 +134,7 @@ func updateBody(group map[string]string, args []string) {
 		if !regBody.MatchString(line) {
 			log.Fatalf("Invalid line: %s\n", line)
 		} else {
-			k, v := parseBodyLine(line)
+			k, v := parseBodyLine(line, true)
 			m[k] = v
 		}
 	}

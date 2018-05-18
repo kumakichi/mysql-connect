@@ -38,6 +38,20 @@ func del(args []string) {
 	}
 }
 
+func add(args []string) {
+	if len(args) == 0 {
+		errArgs("Should be like: %s add groupName [host=someHost] [user=someUser] ...\n", os.Args[0])
+	}
+
+	if _, ok := groups[args[0]]; ok {
+		log.Fatalf("Group %s already exists\n", args[0])
+	} else {
+		groups[args[0]] = make(map[string]string)
+		groups[args[0]]["typ"] = clientPrefix
+		updateBody(groups[args[0]], args[1:])
+	}
+}
+
 func set(args []string) {
 	if len(args) < 2 {
 		errArgs("Should be like: %s set groupName host=someHost user=someUser ...\n", os.Args[0])

@@ -28,6 +28,8 @@ func main() {
 		show(args)
 	case "del":
 		del(args)
+	case "add":
+		add(args)
 	case "set":
 		set(args)
 	case "conn":
@@ -39,6 +41,6 @@ func main() {
 }
 
 func usage() {
-	fmt.Printf("Usage: %s [set/list/show/del/connect] [group]\n", os.Args[0])
+	fmt.Printf("Usage: %s [set/list/show/del/connect/add] [group]\n", os.Args[0])
 	os.Exit(0)
 }
