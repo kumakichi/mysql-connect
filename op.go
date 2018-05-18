@@ -31,6 +31,11 @@ func del(args []string) {
 	if len(args) < 1 {
 		errArgs("Should be like: %s del group1 [group2] ...\n", os.Args[0])
 	}
+
+	for _, v := range args {
+		delete(groups, v)
+		updateMyCnf()
+	}
 }
 
 func set(args []string) {
