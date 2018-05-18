@@ -22,8 +22,6 @@ func main() {
 	args := os.Args[2:]
 
 	switch cmd {
-	case "get":
-		get(args)
 	case "list":
 		list()
 	case "show":
@@ -41,6 +39,6 @@ func main() {
 }
 
 func usage() {
-	fmt.Printf("Usage: %s [get/set/list/show/del/connect] [group]\n", os.Args[0])
+	fmt.Printf("Usage: %s [set/list/show/del/connect] [group]\n", os.Args[0])
 	os.Exit(0)
 }

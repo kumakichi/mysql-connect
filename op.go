@@ -2,14 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 )
-
-func get(args []string) {
-	if len(args) != 1 {
-		errArgs("Should be like: %s get groupName\n", os.Args[0])
-	}
-}
 
 func list() {
 	for key, _ := range groups {
@@ -41,6 +36,12 @@ func del(args []string) {
 func set(args []string) {
 	if len(args) < 2 {
 		errArgs("Should be like: %s set groupName host=someHost user=someUser ...\n", os.Args[0])
+	}
+
+	if group, ok := groups[args[0]]; ok {
+		updateBody(group, args[1:])
+	} else {
+		log.Fatalf("Group %s not found\n", args[0])
 	}
 }
 
