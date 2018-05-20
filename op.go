@@ -39,6 +39,22 @@ func del(args []string) {
 	}
 }
 
+func cp(args []string) {
+	if len(args) != 2 {
+		errArgs("Should be like: %s cp fromGroup toGroup\n", os.Args[0])
+	}
+
+	if _, ok := groups[args[0]]; !ok {
+		log.Fatalf("Group %s not exists\n", args[0])
+	} else {
+		groups[args[1]] = make(map[string]string)
+		for k, v := range groups[args[0]] {
+			groups[args[1]][k] = v
+		}
+		updateMyCnf()
+	}
+}
+
 func add(args []string) {
 	if len(args) == 0 {
 		errArgs("Should be like: %s add groupName [host=someHost] [user=someUser] ...\n", os.Args[0])

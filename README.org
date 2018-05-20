@@ -32,3 +32,8 @@
    #+BEGIN_SRC sh
      mysql-connect conn default
    #+END_SRC
+** cp
+   copy an existing group, this is useful for the same server but different database, for example, a prod env and a test env
+   #+BEGIN_SRC sh
+     mysql-connect cp default newGroup
+   #+END_SRC

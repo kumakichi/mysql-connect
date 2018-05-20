@@ -34,6 +34,8 @@ func main() {
 		set(args)
 	case "conn":
 		conn(args)
+	case "cp":
+		cp(args)
 	default:
 		fmt.Printf("Unsupported command: %s\n", os.Args[1])
 		os.Exit(-1)
@@ -41,6 +43,6 @@ func main() {
 }
 
 func usage() {
-	fmt.Printf("Usage: %s [set/list/show/del/conn/add] [group]\n", os.Args[0])
+	fmt.Printf("Usage: %s [set/list/show/del/conn/add/cp] [options]\n", os.Args[0])
 	os.Exit(0)
 }
