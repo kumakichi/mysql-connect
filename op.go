@@ -86,7 +86,7 @@ func conn(args []string) {
 		errArgs("Should be like: %s conn groupName\n", os.Args[0])
 	}
 
-	exec_command("mysql", fmt.Sprintf("--defaults-group-suffix=%s\n", args[0]))
+	exec_command("mysql", fmt.Sprintf("--defaults-group-suffix=%s", args[0]))
 }
 
 func errArgs(format string, a ...interface{}) {
