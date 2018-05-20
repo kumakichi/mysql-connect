@@ -1,5 +1,9 @@
 * About
   This program helps you managing mysql servers in *~/.my.cnf*, and quick connecting(using --defaults-group-suffix)
+* Install
+  #+BEGIN_SRC sh
+    go get -ldflags="-X main.versionStr=$(git rev-parse --short HEAD)" -u github.com/kumakichi/mysql-connect
+  #+END_SRC
 * How to use
   Currently, support *list*, *show*, *set*, *add*, *del*, *conn*
 ** list
