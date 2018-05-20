@@ -19,7 +19,7 @@ func show(args []string) {
 	}
 
 	for _, val := range args {
-		fmt.Printf(" ------- %s -------\n", val)
+		fmt.Printf("-------- %s --------\n", val)
 		if g, ok := groups[val]; ok {
 			printGroup(&g)
 		} else {

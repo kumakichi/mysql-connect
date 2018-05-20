@@ -122,7 +122,7 @@ func parseBodyLine(str string, onlyValidate ...bool) (string, string) {
 func printGroup(group *map[string]string) {
 	for k, v := range *group {
 		if v != "" {
-			fmt.Printf("%s\t%s\n", k, v)
+			fmt.Printf("%-8s\t%s\n", k, v)
 		}
 	}
 }
