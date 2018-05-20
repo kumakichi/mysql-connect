@@ -41,6 +41,6 @@ func main() {
 }
 
 func usage() {
-	fmt.Printf("Usage: %s [set/list/show/del/connect/add] [group]\n", os.Args[0])
+	fmt.Printf("Usage: %s [set/list/show/del/conn/add] [group]\n", os.Args[0])
 	os.Exit(0)
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 )
 
 func list() {
@@ -69,11 +70,21 @@ func conn(args []string) {
 		errArgs("Should be like: %s conn groupName\n", os.Args[0])
 	}
 
-	fmt.Printf("mysql --defaults-group-suffix=%s\n", args[0])
+	exec_command("mysql", fmt.Sprintf("--defaults-group-suffix=%s\n", args[0]))
 }
 
 func errArgs(format string, a ...interface{}) {
-	fmt.Println("Invalid arg[s]")
 	fmt.Printf(format, a...)
 	os.Exit(-1)
+}
+
+func exec_command(program string, args ...string) {
+	cmd := exec.Command(program, args...)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("%v\n", err)
+	}
 }
