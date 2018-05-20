@@ -1,0 +1,34 @@
+* About
+  This program helps you managing mysql servers in *~/.my.cnf*, and quick connecting(using --defaults-group-suffix)
+* How to use
+  Currently, support *list*, *show*, *set*, *add*, *del*, *conn*
+** list
+   list all groups, eg:
+   #+BEGIN_SRC sh
+     mysql-connect list
+   #+END_SRC
+** show
+   show configurations in specified group, eg:
+   #+BEGIN_SRC sh
+     mysql-connect show groupName
+   #+END_SRC
+** set
+   set configurations in specified group(existed group), eg:
+   #+BEGIN_SRC sh
+     mysql-connect set default host=127.0.0.1 user=san
+   #+END_SRC
+** add
+   add a new group and set configurations, eg:
+   #+BEGIN_SRC sh
+     mysql-connect add newGroup host=192.168.10.12 user=san password=123456 database=demo
+   #+END_SRC
+** del
+   delete a group, eg:
+   #+BEGIN_SRC sh
+     mysql-connect del newGroup
+   #+END_SRC
+** conn
+   connect a group, eg:
+   #+BEGIN_SRC sh
+     mysql-connect conn default
+   #+END_SRC
