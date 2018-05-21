@@ -75,7 +75,7 @@ func add(args []string) {
 
 func set(args []string) {
 	if len(args) < 2 {
-		errArgs("Should be like: %s set groupName host=someHost user=someUser ...\n", os.Args[0])
+		errArgs("Should be like: %s set groupName host=someHost [user=someUser] ...\n", os.Args[0])
 	}
 
 	if group, ok := groups[args[0]]; ok {
@@ -83,6 +83,25 @@ func set(args []string) {
 	} else {
 		log.Fatalf("Group %s not found\n", args[0])
 	}
+}
+
+func delOption(args []string) {
+	if len(args) < 2 {
+		errArgs("Should be like: %s set groupName keyName1 [keyName2] ...\n", os.Args[0])
+	}
+
+	if group, ok := groups[args[0]]; ok {
+		for _, v := range args[1:] {
+			if _, ok := group[v]; ok {
+				delete(group, v)
+			} else {
+				fmt.Printf("Key %s not found, fall through...\n", v)
+			}
+		}
+	} else {
+		log.Fatalf("Group %s not found\n", args[0])
+	}
+	updateMyCnf()
 }
 
 func conn(args []string) {

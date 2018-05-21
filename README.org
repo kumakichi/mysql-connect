@@ -48,3 +48,8 @@
    #+BEGIN_SRC sh
      mysql-connect fmt
    #+END_SRC
+** delo
+   delete option[s] from given group, eg:
+   #+BEGIN_SRC sh
+     mysql-connect delo default database
+   #+END_SRC

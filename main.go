@@ -42,6 +42,8 @@ func main() {
 		cp(args)
 	case "fmt":
 		format()
+	case "delo":
+		delOption(args)
 	case "-h", "--help":
 		usage()
 	case "-v", "--version":
@@ -53,7 +55,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Printf("Usage: %s [set/list/show/del/conn/add/cp/fmt] [options]\n", os.Args[0])
+	fmt.Printf("Usage: %s [set/list/show/del/conn/add/cp/fmt/delo] [options]\n", os.Args[0])
 	os.Exit(0)
 }
 
