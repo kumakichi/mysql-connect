@@ -158,10 +158,13 @@ func updateMyCnf() {
 		log.Fatal(err)
 	}
 
+	if def, ok := groups[defaultGroup]; ok {
+		writeGroup(file, defaultGroup, def)
+		delete(groups, defaultGroup)
+	}
+
 	for k, v := range groups {
-		writeHead(file, k, v)
-		writeBody(file, v)
-		file.WriteString("\n")
+		writeGroup(file, k, v)
 	}
 
 	path = file.Name()
@@ -172,6 +175,12 @@ func updateMyCnf() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func writeGroup(file *os.File, key string, val map[string]string) {
+	writeHead(file, key, val)
+	writeBody(file, val)
+	file.WriteString("\n")
 }
 
 func writeHead(file *os.File, str string, m map[string]string) {

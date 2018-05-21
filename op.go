@@ -28,6 +28,10 @@ func show(args []string) {
 	}
 }
 
+func format() {
+	updateMyCnf()
+}
+
 func del(args []string) {
 	if len(args) < 1 {
 		errArgs("Should be like: %s del group1 [group2] ...\n", os.Args[0])

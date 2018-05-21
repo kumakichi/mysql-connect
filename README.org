@@ -41,3 +41,8 @@
    #+BEGIN_SRC sh
      mysql-connect cp default newGroup
    #+END_SRC
+** fmt
+   Default group should be in the very first place of conf file, this command is to format conf file and make mysql happy
+   #+BEGIN_SRC sh
+     mysql-connect fmt
+   #+END_SRC
