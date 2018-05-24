@@ -7,11 +7,11 @@
     go get -ldflags="-X main.versionStr=$(git rev-parse --short HEAD)" -u github.com/kumakichi/mysql-connect
   #+END_SRC
 * How to use
-  Currently, support *list*, *show*, *set*, *add*, *del*, *conn*
-** list
+  Currently, support *ls*, *show*, *set*, *add*, *del*, *conn*
+** ls
    list all groups, eg:
    #+BEGIN_SRC sh
-     mysql-connect list
+     mysql-connect ls
    #+END_SRC
 ** show
    show configurations in specified group, eg:

@@ -26,7 +26,7 @@ func main() {
 	args := os.Args[2:]
 
 	switch cmd {
-	case "list":
+	case "ls":
 		list()
 	case "show":
 		show(args)
@@ -55,7 +55,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Printf("Usage: %s [set/list/show/del/conn/add/cp/fmt/delo] [options]\n", os.Args[0])
+	fmt.Printf("Usage: %s [set/ls/show/del/conn/add/cp/fmt/delo] [options]\n", os.Args[0])
 	os.Exit(0)
 }
 
