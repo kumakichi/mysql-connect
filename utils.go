@@ -107,7 +107,7 @@ func parseBodyLine(str string, onlyValidate ...bool) (string, string) {
 	key := matches[2]
 	val := matches[4]
 
-	if key != "user" && key != "password" && key != "host" && key != "database" {
+	if key != "user" && key != "password" && key != "host" && key != "database" && key != "ssh_user" && key != "ssh_port" && key != "ssh_host" {
 		log.Fatalf("Unsupported key: %s in line [%s]\n", key, str)
 	}
 

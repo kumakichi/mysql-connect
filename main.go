@@ -10,9 +10,6 @@ var (
 	myCnf      string
 	groups     map[string]map[string]string
 	versionStr string
-	sshPort    int
-	sshHost    string
-	sshUser    string
 	mysqlPath  string
 	sshPath    string
 	help       bool
@@ -28,12 +25,9 @@ func init() {
 }
 
 func parseArgs() {
-	flag.IntVar(&sshPort, "p", 22, "SSH port")
-	flag.StringVar(&sshHost, "h", "", "SSH host name/ip")
-	flag.StringVar(&sshUser, "u", "root", "SSH user name")
 	flag.StringVar(&sshPath, "s", "ssh", "ssh program path")
 	flag.StringVar(&mysqlPath, "m", "mysql", "mysql program path")
-	flag.BoolVar(&help, "help", false, "Print this help infomation")
+	flag.BoolVar(&help, "h", false, "Print this help infomation")
 	flag.BoolVar(&version, "v", false, "Print version")
 	flag.Parse()
 
@@ -91,5 +85,5 @@ func showUsageAndExit() {
 }
 
 func showVersion() {
-	fmt.Println(versionStr)
+	fmt.Printf("%s, version: %s\n", os.Args[0], versionStr)
 }

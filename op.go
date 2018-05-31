@@ -87,7 +87,7 @@ func set(args []string) {
 
 func delOption(args []string) {
 	if len(args) < 2 {
-		errArgs("Should be like: %s set groupName keyName1 [keyName2] ...\n", os.Args[0])
+		errArgs("Should be like: %s delo groupName keyName1 [keyName2] ...\n", os.Args[0])
 	}
 
 	if group, ok := groups[args[0]]; ok {
@@ -108,12 +108,30 @@ func conn(args []string) {
 	if len(args) != 1 {
 		errArgs("Should be like: %s conn groupName\n", os.Args[0])
 	}
+	groupName := args[0]
+	group := groups[groupName]
+
+	sshHost := ""
+	sshUser := "root"
+	sshPort := "22"
+
+	if host, ok := group["ssh_host"]; ok {
+		sshHost = host
+	}
+
+	if user, ok := group["ssh_user"]; ok {
+		sshUser = user
+	}
+
+	if port, ok := group["ssh_port"]; ok {
+		sshPort = port
+	}
 
 	if sshHost == "" {
-		exec_command(mysqlPath, fmt.Sprintf("--defaults-group-suffix=%s", args[0]))
+		exec_command(mysqlPath, fmt.Sprintf("--defaults-group-suffix=%s", groupName))
 	} else {
 		cmd := genMysqlConnCmd(groups[args[0]])
-		exec_command(sshPath, fmt.Sprintf("-p %d", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), cmd)
+		exec_command(sshPath, fmt.Sprintf("-p %s", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), cmd)
 	}
 }
 
