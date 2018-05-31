@@ -85,6 +85,20 @@ func set(args []string) {
 	}
 }
 
+func rename(args []string) {
+	if len(args) != 2 {
+		errArgs("Should be like: %s mv groupNameOld groupNameNew\n", os.Args[0])
+	}
+
+	if grp, ok := groups[args[0]]; ok {
+		groups[args[1]] = grp
+		delete(groups, args[0])
+		updateMyCnf()
+	} else {
+		log.Fatalf("Group %s not found\n", args[0])
+	}
+}
+
 func delOption(args []string) {
 	if len(args) < 2 {
 		errArgs("Should be like: %s delo groupName keyName1 [keyName2] ...\n", os.Args[0])

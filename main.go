@@ -62,6 +62,8 @@ func main() {
 		add(args)
 	case "set":
 		set(args)
+	case "mv":
+		rename(args)
 	case "conn":
 		conn(args)
 	case "cp":
@@ -78,7 +80,7 @@ func main() {
 
 func showUsageAndExit() {
 	fmt.Printf("Usage: %s [options] command\n", os.Args[0])
-	fmt.Printf("command list: [set/ls/show/del/conn/add/cp/fmt/delo]\n")
+	fmt.Printf("command list: [set/mv/ls/show/del/conn/add/cp/fmt/delo]\n")
 	fmt.Printf("options: \n")
 	flag.PrintDefaults()
 	os.Exit(0)
