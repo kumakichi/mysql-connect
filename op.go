@@ -109,7 +109,33 @@ func conn(args []string) {
 		errArgs("Should be like: %s conn groupName\n", os.Args[0])
 	}
 
-	exec_command("mysql", fmt.Sprintf("--defaults-group-suffix=%s", args[0]))
+	if sshHost == "" {
+		exec_command(mysqlPath, fmt.Sprintf("--defaults-group-suffix=%s", args[0]))
+	} else {
+		cmd := genMysqlConnCmd(groups[args[0]])
+		exec_command(sshPath, fmt.Sprintf("-p %d", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), cmd)
+	}
+}
+
+func genMysqlConnCmd(group map[string]string) string {
+	cmd := mysqlPath
+	if user, ok := group["user"]; ok {
+		cmd += fmt.Sprintf(" -u%s", user)
+	}
+
+	if password, ok := group["password"]; ok {
+		cmd += fmt.Sprintf(" -p%s", password)
+	}
+
+	if host, ok := group["host"]; ok {
+		cmd += fmt.Sprintf(" -h%s", host)
+	}
+
+	if database, ok := group["database"]; ok {
+		cmd += fmt.Sprintf(" %s", database)
+	}
+
+	return cmd
 }
 
 func errArgs(format string, a ...interface{}) {

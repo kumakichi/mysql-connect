@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 )
@@ -9,21 +10,38 @@ var (
 	myCnf      string
 	groups     map[string]map[string]string
 	versionStr string
+	sshPort    int
+	sshHost    string
+	sshUser    string
+	mysqlPath  string
+	sshPath    string
 )
 
 func init() {
-	if len(os.Args) < 2 {
-		usage()
-	}
+	parseArgs()
 
 	groups = make(map[string]map[string]string)
 	initConfigurations()
 	readGroups()
 }
 
+func parseArgs() {
+	if len(os.Args) < 2 {
+		usage()
+	}
+
+	flag.IntVar(&sshPort, "p", 22, "SSH port")
+	flag.StringVar(&sshHost, "host", "", "SSH host name/ip")
+	flag.StringVar(&sshUser, "u", "root", "SSH user name")
+	flag.StringVar(&sshPath, "s", "ssh", "ssh program path")
+	flag.StringVar(&mysqlPath, "m", "mysql", "mysql program path")
+	flag.Parse()
+}
+
 func main() {
-	cmd := os.Args[1]
-	args := os.Args[2:]
+	fags := flag.Args()
+	cmd := fags[0]
+	args := fags[1:]
 
 	switch cmd {
 	case "ls":
