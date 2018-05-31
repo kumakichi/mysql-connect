@@ -7,12 +7,12 @@
     go get -ldflags="-X main.versionStr=$(git rev-parse --short HEAD)" -u github.com/kumakichi/mysql-connecter
   #+END_SRC
 * Access via another machine
-  Sometimes, for security reasons, you can not connect mysql servers in your PC, you can only connect them in machines whose ip is in the whitelist.
+  Sometimes, for security reasons, you can not connect mysql servers in your own PC, you can only connect them in machines whose ips are in the whitelist.
 
   mysql-connecter support this scenario, using *ssh*,it supports *ssh_user* (default is root), *ssh_port* (default is 22), *ssh_host*, you can set these options using *set*, and they will be written in ~/.my.cnf.
 
   #+BEGIN_SRC sh
-    mysql-connecter add demo user=someUser password=somePassword host=someMysqlHost database=someDatabase ssh_user=someUser ssh_port=2222 ssh_host=someHostInWhitelist
+    mysql-connecter add demo user=someUser password=somePassword host=someMysqlHost database=someDatabase ssh_user=someUser ssh_port=2222 ssh_host=someHostInWhitelist ssh_identity_file=pathToPrivateKey
     mysql-connecter conn demo
   #+END_SRC
 * How to use

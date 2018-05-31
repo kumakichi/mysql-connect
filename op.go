@@ -144,8 +144,12 @@ func conn(args []string) {
 	if sshHost == "" {
 		exec_command(mysqlPath, fmt.Sprintf("--defaults-group-suffix=%s", groupName))
 	} else {
-		cmd := genMysqlConnCmd(groups[args[0]])
-		exec_command(sshPath, fmt.Sprintf("-p %s", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), cmd)
+		mysqlCmd := genMysqlConnCmd(groups[args[0]])
+		if identity_file, ok := group["ssh_identity_file"]; ok {
+			exec_command(sshPath, "-i", identity_file, fmt.Sprintf("-p %s", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), mysqlCmd)
+		} else {
+			exec_command(sshPath, fmt.Sprintf("-p %s", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), mysqlCmd)
+		}
 	}
 }
 

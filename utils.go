@@ -107,7 +107,8 @@ func parseBodyLine(str string, onlyValidate ...bool) (string, string) {
 	key := matches[2]
 	val := matches[4]
 
-	if key != "user" && key != "password" && key != "host" && key != "database" && key != "ssh_user" && key != "ssh_port" && key != "ssh_host" {
+	validKeys := []string{"user", "password", "host", "database", "ssh_user", "ssh_port", "ssh_host", "ssh_identity_file"}
+	if ok, _ := indexOf(validKeys, key); !ok {
 		log.Fatalf("Unsupported key: %s in line [%s]\n", key, str)
 	}
 
@@ -197,4 +198,14 @@ func writeBody(file *os.File, m map[string]string) {
 			file.WriteString(fmt.Sprintf("%s=%s\n", k, v))
 		}
 	}
+}
+
+func indexOf(a []string, x string) (bool, int) {
+	for k, v := range a {
+		if x == v {
+			return true, k
+		}
+	}
+
+	return false, -1
 }
