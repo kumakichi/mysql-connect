@@ -4,52 +4,66 @@
   *Currently, support only GNU/Linux*
 * Install
   #+BEGIN_SRC sh
-    go get -ldflags="-X main.versionStr=$(git rev-parse --short HEAD)" -u github.com/kumakichi/mysql-connect
+    go get -ldflags="-X main.versionStr=$(git rev-parse --short HEAD)" -u github.com/kumakichi/mysql-connecter
+  #+END_SRC
+* Access via another machine
+  Sometimes, for security reasons, you can not connect mysql servers in your PC, you can only connect them in machines whose ip is in the whitelist.
+
+  mysql-connecter support this scenario, using *ssh*,it supports *ssh_user* (default is root), *ssh_port* (default is 22), *ssh_host*, you can set these options using *set*, and they will be written in ~/.my.cnf.
+
+  #+BEGIN_SRC sh
+    mysql-connecter add demo user=someUser password=somePassword host=someMysqlHost database=someDatabase ssh_user=someUser ssh_port=2222 ssh_host=someHostInWhitelist
+    mysql-connecter conn demo
   #+END_SRC
 * How to use
-  Currently, support *ls*, *show*, *set*, *add*, *del*, *conn*
+  Currently, support *ls*, *show*, *set*, *add*, *del*, *conn*, *mv*, *cp*, *fmt*, *delo*
 ** ls
    list all groups, eg:
    #+BEGIN_SRC sh
-     mysql-connect ls
+     mysql-connecter ls
    #+END_SRC
 ** show
    show configurations in specified group, eg:
    #+BEGIN_SRC sh
-     mysql-connect show groupName
+     mysql-connecter show groupName
    #+END_SRC
 ** set
    set configurations in specified group(existed group), eg:
    #+BEGIN_SRC sh
-     mysql-connect set default host=127.0.0.1 user=san
+     mysql-connecter set default host=127.0.0.1 user=san
+   #+END_SRC
+** mv
+   rename a group
+   #+BEGIN_SRC sh
+     mysql-connecter mv groupNameOld groupNameNew
    #+END_SRC
 ** add
    add a new group and set configurations, eg:
    #+BEGIN_SRC sh
-     mysql-connect add newGroup host=192.168.10.12 user=san password=123456 database=demo
+     mysql-connecter add newGroup host=192.168.10.12 user=san password=123456 database=demo
    #+END_SRC
 ** del
    delete a group, eg:
    #+BEGIN_SRC sh
-     mysql-connect del newGroup
+     mysql-connecter del newGroup
    #+END_SRC
 ** conn
    connect a group, eg:
    #+BEGIN_SRC sh
-     mysql-connect conn default
+     mysql-connecter conn default
    #+END_SRC
 ** cp
    copy an existing group, this is useful for the same server but different database, for example, a prod env and a test env
    #+BEGIN_SRC sh
-     mysql-connect cp default newGroup
+     mysql-connecter cp default newGroup
    #+END_SRC
 ** fmt
    Default group should be in the very first place of conf file, this command is to format conf file and make mysql happy
    #+BEGIN_SRC sh
-     mysql-connect fmt
+     mysql-connecter fmt
    #+END_SRC
 ** delo
    delete option[s] from given group, eg:
    #+BEGIN_SRC sh
-     mysql-connect delo default database
+     mysql-connecter delo default database
    #+END_SRC
