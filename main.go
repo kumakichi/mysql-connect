@@ -15,6 +15,8 @@ var (
 	sshUser    string
 	mysqlPath  string
 	sshPath    string
+	help       bool
+	version    bool
 )
 
 func init() {
@@ -26,22 +28,34 @@ func init() {
 }
 
 func parseArgs() {
-	if len(os.Args) < 2 {
-		usage()
-	}
-
 	flag.IntVar(&sshPort, "p", 22, "SSH port")
-	flag.StringVar(&sshHost, "host", "", "SSH host name/ip")
+	flag.StringVar(&sshHost, "h", "", "SSH host name/ip")
 	flag.StringVar(&sshUser, "u", "root", "SSH user name")
 	flag.StringVar(&sshPath, "s", "ssh", "ssh program path")
 	flag.StringVar(&mysqlPath, "m", "mysql", "mysql program path")
+	flag.BoolVar(&help, "help", false, "Print this help infomation")
+	flag.BoolVar(&version, "v", false, "Print version")
 	flag.Parse()
+
+	if help {
+		showVersion()
+		showUsageAndExit()
+	}
+
+	if version {
+		showVersion()
+		os.Exit(0)
+	}
 }
 
 func main() {
-	fags := flag.Args()
-	cmd := fags[0]
-	args := fags[1:]
+	arguments := flag.Args()
+	if len(arguments) < 1 {
+		showUsageAndExit()
+	}
+
+	cmd := arguments[0]
+	args := arguments[1:]
 
 	switch cmd {
 	case "ls":
@@ -62,21 +76,20 @@ func main() {
 		format()
 	case "delo":
 		delOption(args)
-	case "-h", "--help":
-		usage()
-	case "-v", "--version":
-		version()
 	default:
 		fmt.Printf("Unsupported command: %s\n", os.Args[1])
 		os.Exit(-1)
 	}
 }
 
-func usage() {
-	fmt.Printf("Usage: %s [set/ls/show/del/conn/add/cp/fmt/delo] [options]\n", os.Args[0])
+func showUsageAndExit() {
+	fmt.Printf("Usage: %s [options] command\n", os.Args[0])
+	fmt.Printf("command list: [set/ls/show/del/conn/add/cp/fmt/delo]\n")
+	fmt.Printf("options: \n")
+	flag.PrintDefaults()
 	os.Exit(0)
 }
 
-func version() {
+func showVersion() {
 	fmt.Println(versionStr)
 }
