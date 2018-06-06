@@ -67,3 +67,8 @@
    #+BEGIN_SRC sh
      mysql-connecter delo default database
    #+END_SRC
+** dump
+   call *mysqldump*
+   #+BEGIN_SRC sh
+     mysql-connecter dump groupName table1 table2 --no-data
+   #+END_SRC

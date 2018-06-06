@@ -7,13 +7,14 @@ import (
 )
 
 var (
-	myCnf      string
-	groups     map[string]map[string]string
-	versionStr string
-	mysqlPath  string
-	sshPath    string
-	help       bool
-	version    bool
+	myCnf         string
+	groups        map[string]map[string]string
+	versionStr    string
+	mysqlPath     string
+	mysqlDumpPath string
+	sshPath       string
+	help          bool
+	version       bool
 )
 
 func init() {
@@ -27,6 +28,7 @@ func init() {
 func parseArgs() {
 	flag.StringVar(&sshPath, "s", "ssh", "ssh program path")
 	flag.StringVar(&mysqlPath, "m", "mysql", "mysql program path")
+	flag.StringVar(&mysqlDumpPath, "d", "mysqldump", "mysqldump program path")
 	flag.BoolVar(&help, "h", false, "Print this help infomation")
 	flag.BoolVar(&version, "v", false, "Print version")
 	flag.Parse()
@@ -72,6 +74,8 @@ func main() {
 		format()
 	case "delo":
 		delOption(args)
+	case "dump":
+		dump(args)
 	default:
 		fmt.Printf("Unsupported command: %s\n", os.Args[1])
 		os.Exit(-1)
@@ -80,7 +84,7 @@ func main() {
 
 func showUsageAndExit() {
 	fmt.Printf("Usage: %s [options] command\n", os.Args[0])
-	fmt.Printf("command list: [set/mv/ls/show/del/conn/add/cp/fmt/delo]\n")
+	fmt.Printf("command list: [set/mv/ls/show/del/conn/add/cp/fmt/delo/dump]\n")
 	fmt.Printf("options: \n")
 	flag.PrintDefaults()
 	os.Exit(0)

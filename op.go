@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func list() {
@@ -118,6 +119,45 @@ func delOption(args []string) {
 	updateMyCnf()
 }
 
+func dump(args []string) {
+	if len(args) < 1 {
+		errArgs("Should be like: %s dump group [OPTIONS] [tables]\n", os.Args[0])
+	}
+
+	if _, ok := groups[args[0]]; !ok {
+		log.Fatalf("Group %s not exists\n", args[0])
+	} else {
+		groupName := args[0]
+		group := groups[groupName]
+
+		sshHost := ""
+		sshUser := "root"
+		sshPort := "22"
+
+		if host, ok := group["ssh_host"]; ok {
+			sshHost = host
+		}
+
+		if user, ok := group["ssh_user"]; ok {
+			sshUser = user
+		}
+
+		if port, ok := group["ssh_port"]; ok {
+			sshPort = port
+		}
+
+		if sshHost == "" {
+			_, opts := genMysqlCmd("", groups[args[0]])
+			dumpOpts := append(opts, args[1:]...)
+			exec_command(mysqlDumpPath, dumpOpts...)
+		} else {
+			cmd, _ := genMysqlCmd(mysqlDumpPath, groups[args[0]])
+			dumpCmd := fmt.Sprintf("%s %s", cmd, strings.Join(args[1:], " "))
+			exec_command(sshPath, fmt.Sprintf("-p %s", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), dumpCmd)
+		}
+	}
+}
+
 func conn(args []string) {
 	if len(args) != 1 {
 		errArgs("Should be like: %s conn groupName\n", os.Args[0])
@@ -144,34 +184,40 @@ func conn(args []string) {
 	if sshHost == "" {
 		exec_command(mysqlPath, fmt.Sprintf("--defaults-group-suffix=%s", groupName))
 	} else {
-		mysqlCmd := genMysqlConnCmd(groups[args[0]])
+		cmd, _ := genMysqlCmd(mysqlPath, groups[args[0]])
 		if identity_file, ok := group["ssh_identity_file"]; ok {
-			exec_command(sshPath, "-i", identity_file, fmt.Sprintf("-p %s", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), mysqlCmd)
+			exec_command(sshPath, "-i", identity_file, fmt.Sprintf("-p %s", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), cmd)
 		} else {
-			exec_command(sshPath, fmt.Sprintf("-p %s", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), mysqlCmd)
+			exec_command(sshPath, fmt.Sprintf("-p %s", sshPort), "-t", fmt.Sprintf("%s@%s", sshUser, sshHost), cmd)
 		}
 	}
 }
 
-func genMysqlConnCmd(group map[string]string) string {
-	cmd := mysqlPath
+func genMysqlCmd(program string, group map[string]string) (string, []string) {
+	opts := []string{}
+
 	if user, ok := group["user"]; ok {
-		cmd += fmt.Sprintf(" -u%s", user)
+		userOpt := fmt.Sprintf("-u%s", user)
+		opts = append(opts, userOpt)
 	}
 
 	if password, ok := group["password"]; ok {
-		cmd += fmt.Sprintf(" -p%s", password)
+		passOpt := fmt.Sprintf("-p%s", password)
+		opts = append(opts, passOpt)
 	}
 
 	if host, ok := group["host"]; ok {
-		cmd += fmt.Sprintf(" -h%s", host)
+		hostOpt := fmt.Sprintf("-h%s", host)
+		opts = append(opts, hostOpt)
 	}
 
 	if database, ok := group["database"]; ok {
-		cmd += fmt.Sprintf(" %s", database)
+		dbOpt := fmt.Sprintf("%s", database)
+		opts = append(opts, dbOpt)
 	}
 
-	return cmd
+	program += " " + strings.Join(opts, " ")
+	return program, opts
 }
 
 func errArgs(format string, a ...interface{}) {
